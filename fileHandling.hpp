@@ -16,3 +16,4 @@ class PGMFile {
         char* image_data;
 
 };
+

@@ -5,7 +5,7 @@ PGMFile::PGMFile(std::string filename){
     std::string pgm_type, dimension, levels;
     std::string line;
     std::ifstream myfile (filename);
-    int image_begin;
+    //int image_begin;
     if (myfile.is_open())
     {
         getline (myfile, this->pgm_type);
@@ -14,14 +14,14 @@ PGMFile::PGMFile(std::string filename){
         myfile.close();
     }
     
-    image_begin = pgm_type.size() + dimension.size() + levels.size() + 3;
+    //image_begin = pgm_type.size() + dimension.size() + levels.size() + 3;
     std::ifstream file (filename, std::ios::in|std::ios::binary|std::ios::ate);
 
     if (file.is_open())
     {
         size = file.tellg();
         this->image_data = new char [size];
-        file.seekg (image_begin, std::ios::beg);
+        file.seekg (15, std::ios::beg); //1s is hardcoded, each image can have a different image begin value. Should refactor
         file.read (this->image_data, size);
         file.close();
     }
