@@ -42,3 +42,8 @@ std::string PGMFile::getLevels(){
 char* PGMFile::getImageData(){
     return this->image_data;
 }
+
+void reshapeVector(std::vector<std::vector<int>> &matrix, std::vector<int> vec, int K, int L){
+    for (int i = 0; i < K * L; i++)
+        matrix.at(i / L).at(i % L) = vec.at(i);
+}

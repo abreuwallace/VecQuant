@@ -1,32 +1,32 @@
 #include "KMeans.hpp"
 
-double EuclideanNorm(std::vector<double> v){
+double EuclideanNorm(std::vector<int> v){
     double norm = 0;
     for (auto el : v)
         norm += std::pow(el, 2);
     return norm;
 }
 
-std::vector<double> SubtractVectors(std::vector<double> v, std::vector<double> w){
+std::vector<int> SubtractVectors(std::vector<int> v, std::vector<int> w){
     if (v.size() != w.size())
         throw std::invalid_argument("Both vectors must have the same size");
-    std::vector<double> vec;
+    std::vector<int> vec;
     for (unsigned int i = 0; i < v.size(); i++)
         vec.push_back(v.at(i) - w.at(i));
     return vec;
 }
 
-std::vector<double> SumVectors(std::vector<double> v, std::vector<double> w){
+std::vector<int> SumVectors(std::vector<int> v, std::vector<int> w){
     if (v.size() != w.size())
         throw std::invalid_argument("Both vectors must have the same size");
-    std::vector<double> vec;
+    std::vector<int> vec;
     for (unsigned int i = 0; i < v.size(); i++)
         vec.push_back(v.at(i) + w.at(i));
     return vec;
 }
 
-std::vector<double> DivideVectorByScalar(std::vector<double> v, double n){
-    std::vector<double> vec;
+std::vector<int> DivideVectorByScalar(std::vector<int> v, double n){
+    std::vector<int> vec;
     for (unsigned int i = 0; i < v.size(); i++)
         vec.push_back(v.at(i) / n);
     return vec;
@@ -63,3 +63,19 @@ void InitializePivotVector(std::vector<double> &pivot, std::vector<std::vector<i
         pivot.at(t) = flat_blocks.at(vec_index).at(t);
 }
 */
+
+double PSNR(std::vector<std::vector<int>> X, std::vector<std::vector<int>> X_hat, int M, int N){
+    double mse = 0;
+    double psnr;
+    for (int m = 0; m < M; m++){
+        for (int n = 0; n < N; n++){
+            mse += std::pow(X.at(m).at(n) - X_hat.at(m).at(n), 2);
+        }
+    }
+    mse /= (M * N);
+    if (mse > 0)
+        psnr = 10 * std::log10(65025 / mse);
+    else 
+        psnr = 100;
+    return psnr;
+}
