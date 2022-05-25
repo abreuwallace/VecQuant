@@ -6,36 +6,25 @@
 #include "fileHandling.hpp"
 #include "KMeans.hpp"
 int main(){
-    std::vector<std::string> files = {"treino/lena.256.pgm", "treino/aerial.pgm"};
-    std::string filename = "treino/lena.256.pgm";
+    //std::vector<std::string> files = {"treino/lena.256.pgm", "treino/aerial.pgm"};
+    std::string filename = "treino/pp1209.pgm";
     PGMFile image(filename);
-    std::string image_data = std::string(image.getImageData());
-    uint8_t coefficient;
-    int M = 256;
-    int N = 256;
+    std::vector<uint8_t> image_data = image.getImageData();
+    std::vector<int> image_data_vec = {image_data.begin() + 15, image_data.end()}; 
+    int M = image.getHeight();
+    int N = image.getWidth();
+    std::cout << M << ' ' << N << '\n';
     int M_q = M;
     int N_q = N;
-    std::vector<int> matrix_line;
-    std::vector<std::vector<int>> matrix;
-    int line_count = 0;
-    int K = 2;
-    int L = 4;
+    std::vector<std::vector<int>> matrix (M, std::vector<int> (N));
+
+    int K = 8;
+    int L = 8;
     std::vector<std::vector<int>> block_list (M / K, std::vector<int> (N / L));
     //Matrix of image chars building
-    for (unsigned int i = 0; i < image_data.size(); i++){
-        coefficient = image_data.at(i);
-        //std::cout << coefficient << " ";
-        matrix_line.push_back(coefficient);
-        if (line_count == N - 1) {
-            matrix.push_back(matrix_line);
-            //for (auto el : matrix_line)
-            //    std::cout << el << ' ';
-            matrix_line.clear();
-            line_count = 0;
-        }
-        else 
-            line_count++;
-    }
+    
+    reshapeVector(matrix, image_data_vec, M, N);
+    
     //std::cout << '\n';
 /*
 
@@ -78,7 +67,7 @@ int main(){
     N = flat_blocks_vector.size(); 
     M = flat_blocks_vector.at(0).size();
 
-    int n_clusters = 128;
+    int n_clusters = 64;
 
     std::random_device rd;
     std::mt19937 generator(rd());
